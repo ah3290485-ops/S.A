@@ -23,7 +23,8 @@ let certMime = "";
 
 certInput.addEventListener("change", async () => {
   const file = certInput.files?.[0];
-  certBase64 = ""; certMime = "";
+  certBase64 = ""; 
+  certMime = "";
   preview.innerHTML = "ارفع صورة واضحة وبحجم أقل من 2MB.";
 
   if (!file) return;
@@ -61,12 +62,14 @@ form.addEventListener("submit", async (e)=>{
     certMime
   };
 
-  if (!payload.certBase64) return setMsg("لازم ترفع صورة شهادة الدراسة.", false);
+  if (!payload.certBase64) {
+    return setMsg("لازم ترفع صورة شهادة الدراسة.", false);
+  }
 
   try{
     setMsg("جالس نرسل طلبك…", true);
 
-    const res = await fetch("/.netlify/functions/telegram", {
+    const res = await fetch("/.netlify/functions/submit", {
       method:"POST",
       headers:{ "Content-Type":"application/json" },
       body: JSON.stringify(payload)
@@ -75,10 +78,21 @@ form.addEventListener("submit", async (e)=>{
     const data = await res.json().catch(()=>({}));
     if (!res.ok) throw new Error(data.error || "فشل الإرسال");
 
-    setMsg("تم إرسال طلبك بنجاح ✅", true);
+    setMsg(`✅ تم استلام طلبك بنجاح
+🆔 رقم الطلب: ${data.requestId}
+احتفظ بالرقم لمتابعة الحالة`, true);
+
     form.reset();
     preview.innerHTML = "ارفع صورة واضحة وبحجم أقل من 2MB.";
-    certBase64 = ""; certMime = "";
+    certBase64 = "";
+    certMime = "";
+
+    form.insertAdjacentHTML("beforeend", `
+      <a class="btn ghost" href="status.html" style="margin-top:10px">
+        🔎 متابعة حالة الطلب
+      </a>
+    `);
+
   }catch(err){
     setMsg("صار خطأ: " + err.message, false);
   }
