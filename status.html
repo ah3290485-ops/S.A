@@ -1,0 +1,73 @@
+<!doctype html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>متابعة حالة الطلب 🇸🇦</title>
+  <link rel="stylesheet" href="assets/style.css">
+</head>
+<body>
+  <div class="container">
+    <div class="topbar">
+      <div class="brand">
+        <div class="logo"></div>
+        <div>
+          <span class="badge">🇸🇦</span>
+          <h1>متابعة حالة الطلب</h1>
+          <p class="small">اكتب رقم الطلب وتحقق من حالته</p>
+        </div>
+      </div>
+      <a class="btn ghost" href="index.html">⬅ رجوع</a>
+    </div>
+
+    <div class="card">
+      <div id="msg"></div>
+
+      <div class="grid">
+        <div>
+          <label>رقم الطلب</label>
+          <input id="requestId" placeholder="مثال: REQ-8F3K2A">
+        </div>
+
+        <button class="btn primary" onclick="checkStatus()">🔍 تحقق من الحالة</button>
+      </div>
+    </div>
+  </div>
+
+<script>
+async function checkStatus(){
+  const id = document.getElementById("requestId").value.trim();
+  const msg = document.getElementById("msg");
+
+  if(!id){
+    msg.innerHTML = `<div class="notice">اكتب رقم الطلب أولاً</div>`;
+    return;
+  }
+
+  try{
+    const res = await fetch(`/.netlify/functions/status?id=${id}`);
+    const data = await res.json();
+
+    if(!data.ok){
+      msg.innerHTML = `<div class="notice">رقم الطلب غير موجود</div>`;
+      return;
+    }
+
+    if(data.status === "pending"){
+      msg.innerHTML = `<div class="notice">⏳ طلبك قيد المراجعة</div>`;
+    }
+    else if(data.status === "accepted"){
+      msg.innerHTML = `<div class="notice ok">🎉 تم قبول طلبك بنجاح</div>`;
+    }
+    else if(data.status === "rejected"){
+      msg.innerHTML = `<div class="notice">❌ نعتذر، تم رفض الطلب</div>`;
+    }
+
+  }catch(err){
+    msg.innerHTML = `<div class="notice">صار خطأ، حاول مرة ثانية</div>`;
+  }
+}
+</script>
+
+</body>
+</html>
