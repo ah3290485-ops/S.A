@@ -1,0 +1,120 @@
+<!doctype html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>بوابة الوظايف 🇸🇦</title>
+  <link rel="stylesheet" href="assets/style.css">
+</head>
+<body>
+  <div class="container">
+    <div class="topbar">
+      <div class="brand">
+        <div class="logo"></div>
+        <div>
+          <div class="row" style="justify-content:flex-start">
+            <span class="badge">🇸🇦</span>
+            <span class="badge">ذهبي • فضي</span>
+          </div>
+          <h1>بوابة الوظايف</h1>
+          <p class="small">اختَر الوظيفة وقدّم الحين — وبيوصل طلبك للأدمن على تلغرام</p>
+        </div>
+      </div>
+      <a class="btn primary" href="apply.html">📝 قدّم الحين</a>
+    </div>
+
+    <div class="card">
+      <div class="grid two">
+        <div>
+          <label>ابحث</label>
+          <input id="q" placeholder="مثال: مبيعات / محاسب / تصميم...">
+        </div>
+        <div>
+          <label>المدينة</label>
+          <select id="city">
+            <option value="">كل المدن</option>
+          </select>
+        </div>
+      </div>
+
+      <div class="hr"></div>
+
+      <!-- أقسام الوظايف (حكومي/خاص) -->
+      <div id="jobs"></div>
+
+      <p class="footer-note">
+        تنبيه: وقت التقديم لازم ترفع صورة شهادة الدراسة (يفضّل أقل من <kbd>2MB</kbd>).
+      </p>
+    </div>
+  </div>
+
+  <script type="module">
+    import { JOBS } from "./assets/jobs.js";
+
+    const jobsEl = document.querySelector("#jobs");
+    const qEl = document.querySelector("#q");
+    const cityEl = document.querySelector("#city");
+
+    const cities = [...new Set(JOBS.map(j=>j.city).filter(Boolean))];
+    cities.forEach(c=>{
+      const o=document.createElement("option");
+      o.value=c; o.textContent=c;
+      cityEl.appendChild(o);
+    });
+
+    function escapeHtml(s){
+      return String(s).replace(/[&<>"']/g, m => ({
+        "&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"
+      }[m]));
+    }
+
+    function jobCard(j){
+      return `
+        <div class="job" style="${j.category==='gov'?'border:1px solid #d6b25e':''}">
+          <div class="row" style="justify-content:space-between;align-items:flex-start">
+            <div>
+              <h3>${escapeHtml(j.title)}</h3>
+              <p>${escapeHtml(j.company)} • ${escapeHtml(j.city)} • ${escapeHtml(j.type)}</p>
+            </div>
+            <a class="btn primary" href="apply.html?job=${encodeURIComponent(j.title)}">قدّم الحين</a>
+          </div>
+          <div class="hr"></div>
+          <p>${escapeHtml(j.desc)}</p>
+        </div>
+      `;
+    }
+
+    function render(){
+      const term = (qEl.value||"").trim().toLowerCase();
+      const c = cityEl.value;
+
+      const filtered = JOBS.filter(j=>{
+        const okTerm = !term || (j.title+" "+j.company+" "+j.desc).toLowerCase().includes(term);
+        const okCity = !c || j.city === c;
+        return okTerm && okCity;
+      });
+
+      const govJobs = filtered.filter(j => j.category === "gov");
+      const privateJobs = filtered.filter(j => j.category === "private");
+
+      jobsEl.innerHTML = `
+        ${govJobs.length ? `
+          <h2 style="color:#d6b25e;margin:10px 0 8px 0">🏛 الوظايف الحكومية</h2>
+          <div class="jobs">${govJobs.map(jobCard).join("")}</div>
+        ` : ""}
+
+        ${privateJobs.length ? `
+          <h2 style="color:#c9cdd7;margin:18px 0 8px 0">💼 وظائف القطاع الخاص</h2>
+          <div class="jobs">${privateJobs.map(jobCard).join("")}</div>
+        ` : ""}
+
+        ${!filtered.length ? `<div class="notice">ما لقينا نتائج مطابقة.</div>` : ""}
+      `;
+    }
+
+    qEl.addEventListener("input", render);
+    cityEl.addEventListener("change", render);
+    render();
+  </script>
+</body>
+</html>
