@@ -1,0 +1,118 @@
+<!doctype html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>قدّم على وظيفة 🇸🇦</title>
+  <link rel="stylesheet" href="assets/style.css">
+</head>
+<body>
+  <div class="container">
+    <div class="topbar">
+      <div class="brand">
+        <div class="logo"></div>
+        <div>
+          <div class="row" style="justify-content:flex-start">
+            <span class="badge">🇸🇦</span>
+            <span class="badge">نموذج التقديم</span>
+          </div>
+          <h1>قدّم على وظيفة</h1>
+          <p class="small">عبّ البيانات وبيوصل طلبك للأدمن على تلغرام</p>
+        </div>
+      </div>
+      <a class="btn ghost" href="index.html">⬅ رجوع</a>
+    </div>
+
+    <div class="card">
+      <div id="msg"></div>
+
+      <form id="form" class="grid">
+        <div class="grid two">
+          <div>
+            <label>اسم الوظيفة</label>
+            <input id="jobTitle" placeholder="مثال: موظف مبيعات" required>
+          </div>
+          <div>
+            <label>اسمك</label>
+            <input id="name" placeholder="اكتب اسمك الكامل" required>
+          </div>
+        </div>
+
+        <div class="grid two">
+          <div>
+            <label>رقم جوالك</label>
+            <input id="phone" placeholder="+966..." required>
+          </div>
+          <div>
+            <label>مكان السكن (المنطقة)</label>
+            <select id="residence" required>
+              <option value="">اختر مكان السكن</option>
+              <option value="الرياض">الرياض</option>
+              <option value="مكة المكرمة">مكة المكرمة</option>
+              <option value="المدينة المنورة">المدينة المنورة</option>
+              <option value="القصيم">القصيم</option>
+              <option value="المنطقة الشرقية">المنطقة الشرقية</option>
+              <option value="عسير">عسير</option>
+              <option value="تبوك">تبوك</option>
+              <option value="حائل">حائل</option>
+              <option value="الحدود الشمالية">الحدود الشمالية</option>
+              <option value="جازان">جازان</option>
+              <option value="نجران">نجران</option>
+              <option value="الباحة">الباحة</option>
+              <option value="الجوف">الجوف</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="grid two">
+          <div>
+            <label>مكان الوظيفة اللي تبيه (المنطقة)</label>
+            <select id="workPlace" required>
+              <option value="">اختر مكان الوظيفة</option>
+              <option value="الرياض">الرياض</option>
+              <option value="مكة المكرمة">مكة المكرمة</option>
+              <option value="المدينة المنورة">المدينة المنورة</option>
+              <option value="القصيم">القصيم</option>
+              <option value="المنطقة الشرقية">المنطقة الشرقية</option>
+              <option value="عسير">عسير</option>
+              <option value="تبوك">تبوك</option>
+              <option value="حائل">حائل</option>
+              <option value="الحدود الشمالية">الحدود الشمالية</option>
+              <option value="جازان">جازان</option>
+              <option value="نجران">نجران</option>
+              <option value="الباحة">الباحة</option>
+              <option value="الجوف">الجوف</option>
+            </select>
+          </div>
+          <div>
+            <label>سنوات الخبرة</label>
+            <input id="exp" placeholder="مثال: 2 سنوات" required>
+          </div>
+        </div>
+
+        <div>
+          <label>صورة شهادة الدراسة (مطلوب)</label>
+          <input id="cert" type="file" accept="image/*" required>
+          <div class="preview" id="preview">ارفع صورة واضحة وبحجم أقل من 2MB.</div>
+        </div>
+
+        <div>
+          <label>ملاحظات (اختياري)</label>
+          <textarea id="notes" placeholder="أي تفاصيل إضافية عنك أو عن الوظيفة اللي تبيها"></textarea>
+        </div>
+
+        <label class="row" style="gap:8px">
+          <input id="consent" type="checkbox" style="width:auto" required>
+          <span class="small">أوافق على إرسال (الاسم + الجوال + صورة الشهادة) للأدمن عبر تلغرام لغرض التوظيف.</span>
+        </label>
+
+        <button class="btn primary" type="submit">🚀 إرسال الطلب</button>
+      </form>
+
+      <p class="footer-note">إذا ما انرسل، جرّب تقلّل حجم الصورة أو حوّلها إلى JPG.</p>
+    </div>
+  </div>
+
+  <script type="module" src="assets/apply.js"></script>
+</body>
+</html>
